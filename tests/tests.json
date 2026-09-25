@@ -1,0 +1,96 @@
+[
+  {
+    "name": "Contain a rogue release agent end to end",
+    "sanity": true,
+    "viewport": "desktop",
+    "covers": [
+      "GET /api/tower initial control-plane load",
+      "POST /api/tower/failure rogue-agent scenario",
+      "automatic write containment",
+      "drift detection",
+      "risk approval creation",
+      "realtime tower entity update",
+      "mission-control reasoning replay"
+    ],
+    "description": "Verifies the deliberate rogue-agent scenario is detected server-side, blocked, broadcast, and surfaced in the mission-control interface.",
+    "steps": [
+      "Click \"Run Rogue Test\" in the top command bar",
+      "Observe Deploy Agent change to contained in both the operations map and fleet row",
+      "Confirm the reasoning replay is focused on Deploy Agent and the critical approval is visible"
+    ],
+    "expected": "The unsafe rollout is contained, Deploy Agent shows the critical state, a high-risk human gate is visible, and the six-step reasoning replay explains the containment."
+  },
+  {
+    "name": "Intervene on a running agent",
+    "viewport": "desktop",
+    "covers": [
+      "POST /api/tower/agent/:id/control pause resume kill",
+      "server-backed operator intervention",
+      "fleet command controls",
+      "audit event creation"
+    ],
+    "description": "Verifies the mission-control fleet controls mutate canonical fleet state rather than only changing presentation state.",
+    "steps": [
+      "Select Research Agent in the fleet",
+      "Pause Research Agent",
+      "Resume Research Agent",
+      "Select Research Agent in the replay dock and use Kill Switch"
+    ],
+    "expected": "Research Agent transitions through paused, running, and killed states, with interventions represented in the shared event history."
+  },
+  {
+    "name": "Resolve a risky approval and retain the result",
+    "viewport": "desktop",
+    "covers": [
+      "POST /api/tower/approval/:id",
+      "human approval gate",
+      "active alerts panel",
+      "database-backed shared state"
+    ],
+    "description": "Verifies a risky action can be reviewed directly from Active Alerts and the resolved state remains canonical.",
+    "steps": [
+      "Locate the Ledger/Ops approval in Active Alerts",
+      "Click Deny",
+      "Refresh the page"
+    ],
+    "expected": "The resolved approval no longer appears as pending after refresh and the operator decision remains in the shared audit history."
+  },
+  {
+    "name": "Watch live usage and reasoning replay on mobile",
+    "viewport": "mobile",
+    "covers": [
+      "POST /api/tower/tick server-side agent work",
+      "WebSocket live event stream",
+      "token usage per agent",
+      "cost per agent",
+      "responsive mission-control UI",
+      "interactive WebGL 3D globe",
+      "responsive reasoning replay"
+    ],
+    "description": "Verifies the mobile cockpit keeps live fleet signals, costs, and the reasoning replay operable.",
+    "steps": [
+      "Confirm the 3D operations globe is visible and rotating",
+      "Observe the fleet until a fresh server-backed event updates usage",
+      "Select Ops Agent",
+      "Scroll to Agent Reasoning Replay"
+    ],
+    "expected": "The true 3D globe renders without flattening, live agent activity remains visible, Ops Agent usage is readable, and all six replay steps are available in the mobile layout."
+  },
+  {
+    "name": "Export audit and reset the shared scenario",
+    "viewport": "desktop",
+    "covers": [
+      "compliance CSV export",
+      "POST /api/tower/reset",
+      "bounded audit history",
+      "multi-team operator view"
+    ],
+    "description": "Verifies the command bar can export current audit evidence and restore the shared demo to a known baseline.",
+    "steps": [
+      "Choose a fleet team filter and return to All teams",
+      "Click \"Export Audit\"",
+      "Click \"Reset\""
+    ],
+    "expected": "The audit CSV download is initiated and the shared fleet returns to the baseline three-agent state with the original pending finance approval."
+  }
+]
