@@ -41,3 +41,5 @@ jobs:
           fi
           git commit -m "chore: install BRAG Codex skill [skip ci]"
           git push
+
+# retrigger
